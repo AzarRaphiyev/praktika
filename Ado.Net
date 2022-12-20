@@ -1,0 +1,102 @@
+using System.Data.SqlClient;
+
+namespace ConsoleApp6
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //GetData(1);
+            //GetAllData();
+            Insert();
+            //Delete(9);
+            //Update(10);
+        }
+        
+         public static void GetData(int id)
+        {
+            string connection = "Server=CA-R214-PC05\\SQLEXPRESS;Database=Class;Trusted_Connection=true ";
+            
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                conn.Open();
+                SqlCommand sqlCommand= new SqlCommand ($"SELECT name From students where id={id}", conn);
+                string a = (string)sqlCommand.ExecuteScalar();
+
+                Console.WriteLine(a);
+            }
+        }
+
+        public static void GetAllData()
+        {
+            string connection = "Server=CA-R214-PC05\\SQLEXPRESS;Database=Class;Trusted_Connection=true ";
+
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand("SELECT * From students ", conn);
+                SqlDataReader a = sqlCommand.ExecuteReader();
+                if (a.HasRows)
+                {
+                    while (a.Read())
+                    {
+                        Console.WriteLine($"ID-{a[0]} Name-{a[1]} Surname-{a[3]} Age-{a[4]}");
+                    }
+                }
+            }
+        }
+
+        public static void Insert()
+        {
+            string connection = "Server=CA-R214-PC05\\SQLEXPRESS;Database=Class;Trusted_Connection=true ";
+
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand("INSERT INTO Students VALUES\r\n('Azer','Raphiyev',19,1,1)", conn);
+                int a= sqlCommand.ExecuteNonQuery();
+                if (a>0)
+                {
+                    Console.WriteLine("Worked");
+                }
+                
+            }
+        }
+
+        public static void Delete(int id)
+        {
+            string connection = "Server=CA-R214-PC05\\SQLEXPRESS;Database=Class;Trusted_Connection=true ";
+
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand($"delete  from students where id={id}", conn);
+                int a = sqlCommand.ExecuteNonQuery();
+                if (a > 0)
+                {
+                    Console.WriteLine("Worked");
+                }
+                else
+                {
+                    Console.WriteLine("Error");
+                }
+            }
+        }
+
+        public static void Update(int id)
+        {
+            string connection = "Server=CA-R214-PC05\\SQLEXPRESS;Database=Class;Trusted_Connection=true ";
+
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                conn.Open();
+                SqlCommand sqlCommand = new SqlCommand($"update students\r\nset name='Pirveli'\r\nwhere id={id}", conn);
+                int a = sqlCommand.ExecuteNonQuery();
+                if (a > 0)
+                {
+                    Console.WriteLine("Worked");
+                }
+            }
+        }
+    }
+}
